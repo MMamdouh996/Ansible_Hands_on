@@ -1,0 +1,160 @@
+# - name: copying ssh key to the jump host # play name
+#   hosts: jumphost # alias
+#   become: true # to use sudo , use root user
+#   tasks:
+# #---------------------------------------------------------#
+#     - name: update packages #task name
+#       yum:  #module name 
+#         update_cache : true
+#     - name: copying ssh key #task name
+#       copy:
+#         src: ../mamdouh-ansible.pem
+#         dest: /home/ubuntu/
+
+
+- name: installing proxy  # play name
+  hosts: jumphost  # alias
+  become: true # to use sudo , use root user
+  roles: 
+    - roles/jumphost
+
+#   tasks:
+# #---------------------------------------------------------#
+#     - name: update packages #task name
+#       apt:  #module name 
+#         update_cache : true
+
+#     - name: install nginx #task name
+#       apt: #module name 
+#         name: nginx
+#         state: present #maybe be absent
+# #---------------------------------------------------------#
+
+#     - name: config listening port
+#       lineinfile: 
+#         path: /etc/nginx/sites-available/default
+#        # regexp: "^	location / {" #
+#         firstmatch : true
+#         line: "location / {
+#                 proxy_pass http://internal-private-lb-493117470.us-east-1.elb.amazonaws.com ;"
+
+#     - name: restart nginx 
+#       service:  
+#          name: nginx  
+#          state: restarted  
+#          enabled: yes
+#---------------------------------------------------------#
+
+
+#---------------------------------------------------------#
+#---------------------------------------------------------#
+#---------------------------------------------------------#
+#---------------------------------------------------------#
+- name: installing sonarqube  # play name
+  hosts: sonarqube  # alias
+  become: true # to use sudo , use root user
+  roles:
+    - roles/sonarqube
+
+#   tasks:
+# #---------------------------------------------------------#
+#     - name: update packages #task name
+#       apt:  #module name 
+#         update_cache : true
+
+#     - name: install apache #task name
+#       apt: #module name 
+#         name: apache2
+#         state: present #maybe be absent
+#---------------------------------------------------------#
+#---------------------------------------------------------#
+#---------------------------------------------------------#
+#---------------------------------------------------------#
+
+- name: installing nexus  # play name
+  hosts: nexus  # aliassudo apt install dragonplayer
+  become: true # to use sudo , use root user
+  roles:
+    - roles/nexus
+#   tasks:
+# #---------------------------------------------------------#
+#     - name: update packages #task name
+#       yum:  #module name 
+#         update_cache : true
+
+#     - name: install nginx  #task name
+#       yum: #module name 
+#         name: nginx
+#         state: present #maybe be absent
+
+#     - name: enable nginx 
+#       service:  
+#          name: nginx  
+#          state: restarted  
+#          enabled: yes
+#     - name: install wget #task name
+#       yum: #module name 
+#         name: wget
+#         state: present #maybe be absent
+
+#     - name: install openjdk #task name
+#       yum: #module name 
+#         name: java-1.8.0-openjdk.x86_64
+#         state: present #maybe be absent
+
+
+    # - name: create app dir  #task name
+    #   file:
+    #     path: /home/ec2-user/app
+    #     state: directory
+    #     owner: ec2-user
+    #     group: ec2-user
+    #     # owner: root
+    #     # group: root        
+    #     mode: '777'
+
+    # - name: change dir to the app dir
+    #   command: cd /home/ec2-user/app
+
+    # # - name: Download foo.conf
+    # #   get_url:
+    # #     url: https://download.sonatype.com/nexus/3/latest-unix.tar.gz
+    # #     dest: /home/ec2-user/app
+    # #     mode: '0777'
+
+    # - name: Unarchive a file that needs to be downloaded (added in 2.0)
+    #   unarchive:
+    #     src: https://download.sonatype.com/nexus/3/latest-unix.tar.gz
+    #     dest: /home/ec2-user/app
+    #     remote_src: yes
+
+    # # - name: Renaming part 1
+    # #   copy: 
+    # #     remote_src: True
+    # #     src: /home/ec2-user/app/nexus-3*
+    # #     dest: /home/ec2-user/app/nexus
+
+    # # - n ame: Renaming part 2
+    # #   file: 
+    # #     path: /home/ec2-user/app/nexus-3*
+    # #     state: absent
+
+    # - name: change dir to the app dir
+    #   command: mv /home/ec2-user/app/nexus-3* /home/ec2-user/app/nexus  
+
+    # - name: Add the user 'johnd' with a specific uid and a primary group of 'admin'
+    #   user:
+    #     name: nexus
+
+    # - name: change dir to the app dir
+    #   command: chown -R nexus:nexus /app/nexus
+
+    # - name: change dir to the app dir
+    #   command: chown -R nexus:nexus /app/sonatype-work
+
+
+    # - name: add line in file
+    #   lineinfile: 
+    #     path: /app/nexus/bin/nexus.rc
+    #     regexp: '#run_as_user'
+    #     line: 'run_as_user="nexus" '

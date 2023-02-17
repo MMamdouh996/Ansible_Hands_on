@@ -1,0 +1,4 @@
+public-instance- 1 -public-ip: 18.234.228.158
+public-instance- 2 -public-ip: 3.238.165.27
+private-instance- 2 -private-ip: 10.1.3.5
+private-instance- 1 -private-ip: 10.1.2.11

@@ -1,0 +1,58 @@
+# - name: installing proxy  # play name
+#   hosts: jumphost  # alias
+#   become: true # to use sudo , use root user
+#   roles: 
+#     - roles/jumphost
+
+# #---------------------------------------------------------#
+# #---------------------------------------------------------#
+- name: installing sonarqube  # play name
+  hosts: sonarqube  # alias
+  become: true # to use sudo , use root user
+  # gather_facts: false
+  roles:
+    - roles/postgresql
+    - roles/sonarqube
+
+#---------------------------------------------------------#
+#---------------------------------------------------------#
+
+# - name: installing nexus  # play name
+#   hosts: nexus  # aliassudo apt install dragonplayer
+#   become: true # to use sudo , use root user
+#   roles:
+#     - roles/nexus
+
+#---------------------------------------------------------#
+#---------------------------------------------------------#
+
+
+
+
+# - name: install nginx  #task name
+#   yum: #module name 
+#     name: nginx
+#     state: present #maybe be absent
+# #---------------------------------------------------------#
+# - name: Remove old html
+#   file:
+#     path: /usr/share/nginx/html/index.html
+#     state: absent
+#   become: true
+
+# - name: Inserting index.html
+#   lineinfile: 
+#     path: /usr/share/nginx/html/index.html
+#     line: "Hello from ansible playbook/roles/NEXUS , this is Nexus machine "
+#     create: yes
+#     owner: "ec2-user"
+#     group: "ec2-user"        
+#     mode: '644'
+# #---------------------------------------------------------#
+
+# - name: enable nginx 
+#   service:  
+#     name: nginx  
+#     state: restarted  
+#     enabled: yes
+# #---------------------------------------------------------#

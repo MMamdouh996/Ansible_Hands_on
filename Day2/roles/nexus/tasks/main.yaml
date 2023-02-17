@@ -1,0 +1,100 @@
+- name: update packages #task name
+  yum:  #module name 
+    update_cache : true
+# #---------------------------------------------------------#
+
+
+- name: install wget #task name
+  yum: #module name 
+    name: "{{ item }}"
+    state: present #maybe be absent
+  with_items:
+    - wget
+    - java-1.8.0-openjdk.x86_64  
+ 
+# #---------------------------------------------------------#
+
+- name: create app dir  #task name
+  file:
+    path: /app
+    state: directory      
+    # mode: '777'
+
+# #---------------------------------------------------------#
+
+- name: Unarchive a file that needs to be downloaded (added in 2.0)
+  unarchive:
+    src: https://download.sonatype.com/nexus/3/nexus-3.47.1-01-unix.tar.gz
+    dest: /app
+    remote_src: yes
+
+# -------------------------------------
+- name: Renaming part 1
+  copy: 
+    remote_src: True
+    src: /app/nexus-3.47.1-01/
+    dest: /app/nexus
+    directory_mode: true
+# #---------------------------------------------------------#
+
+- name: Renaming part 2
+  file: 
+    path: /app/nexus-3.47.1-01
+    state: absent
+
+# #---------------------------------------------------------#
+
+- name: Add the user 'nexus' with a specific uid and a primary group of 'admin'
+  user:
+    name: nexus
+# # #---------------------------------------------------------#
+
+- name: Set ownership of folder
+  file:
+    path: /app
+    owner: "nexus"
+    group: "nexus"
+    recurse: yes
+
+# #---------------------------------------------------------#
+
+- name: add line in file
+  lineinfile: 
+    path: /app/nexus/bin/nexus.rc
+    regexp: '#run_as_user'
+    line: 'run_as_user="nexus" '
+    state: present
+
+# #---------------------------------------------------------#
+# - name: add line in file
+#   replace:
+#     path: /app/nexus/bin/nexus.vmoptions
+#     regexp: '^2703m.*$'
+#     replace: '\11024m'
+
+# #---------------------------------------------------------#
+
+- name: Adding Nexus Serivce
+  copy: 
+    src: nexus.service
+    dest: /etc/systemd/system/nexus.service
+# #---------------------------------------------------------#
+# - name: boot config
+#   command: "ln -s /app/nexus/bin/nexus /etc/init.d/nexus " # OLD
+# - name: Creating a symlink
+#   file:
+#     src: /app/nexus/bin/nexus
+#     dest: /etc/init.d/nexus
+#     state: link
+# # #---------------------------------------------------------#
+# - name: boot config
+#   command: "chkconfig --add nexus "
+# - name: boot config
+#   command: "chkconfig --levels 345 nexus on  "
+  # notify: Restart Nexus Service 
+- name: start nexus
+  service:
+    name: nexus
+    state: restarted
+    enabled: yes
+# #---------------------------------------------------------#

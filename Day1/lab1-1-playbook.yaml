@@ -1,0 +1,59 @@
+# playbook set of plays ,, play is some of tasks(actions)
+- name: task 1 # play name
+  # hosts: 35.175.250.33 #hard coded
+  hosts: web # alias
+  become: true # to use sudo , use root user
+  tasks:
+#---------------------------------------------------------#
+    - name: update packages #task name
+      apt:  #module name 
+        update_cache : true
+
+    - name: install nginx #task name
+      apt: #module name 
+        name: nginx
+        state: present #maybe be absense
+
+    # - name: create dir and index.html #task name
+    #   command: mkdir /home/ubuntu/htmls
+
+    - name: create dir and index.html #task name
+      file:
+        path: /home/ubuntu/htmls
+        state: directory
+        owner: "{{ user }}"
+        group: "{{ user }}"
+        mode: '744'
+
+
+
+    - name: create file
+      file: 
+        path: /home/ubuntu/htmls/index.html
+        state: touch
+        # owner: "{{ user }}"
+        # group: "{{ user }}"
+        # mode: '744'
+
+    - name: add line in file
+      lineinfile: 
+        path: /home/ubuntu/htmls/index.html
+        line: "Hello From Nginx Page By Ansible "
+
+    - name: copy file
+      copy:
+        remote_src: true
+        src: /home/ubuntu/htmls/index.html
+        dest: /var/www/html/index.html
+
+    - name: config listening port
+      lineinfile: 
+        path: /etc/nginx/sites-available/default
+        regexp: "listen 80 default_server;"
+        line: "listen 8090 default_server ;"
+
+    - name: restart nginx 
+      service:  
+         name: nginx  
+         state: restarted  
+         enabled: yes

@@ -1,0 +1,2 @@
+nginx_content: "hello from nginx page using variables input in variables file"
+user: ubuntu
