@@ -17,11 +17,11 @@
 #---------------------------------------------------------#
 #---------------------------------------------------------#
 
-# - name: installing nexus  # play name
-#   hosts: nexus  # aliassudo apt install dragonplayer
-#   become: true # to use sudo , use root user
-#   roles:
-#     - roles/nexus
+- name: installing nexus  # play name
+  hosts: nexus  # aliassudo apt install dragonplayer
+  become: true # to use sudo , use root user
+  roles:
+    - roles/nexus
 
 #---------------------------------------------------------#
 #---------------------------------------------------------#
